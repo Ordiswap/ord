@@ -60,7 +60,7 @@ impl Plan {
       locked_utxos.clone(),
       runic_utxos,
       utxos.clone(),
-      [self.change_address.clone().unwrap(), self.change_address.clone().unwrap()],
+      [self.change_address.clone().unwrap(), wallet.get_change_address()?],
       self.change_address.clone().unwrap(),
     )?;
 
