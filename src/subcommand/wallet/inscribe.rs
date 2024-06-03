@@ -46,7 +46,7 @@ pub(crate) struct Inscribe {
   pub(crate) sat: Option<Sat>,
   #[arg(long, help = "Inscribe <SATPOINT>.", conflicts_with = "sat")]
   pub(crate) satpoint: Option<SatPoint>,
-  #[arg(long, help = "Inscribe <CHANGE>.", conflicts_with = "satpoint")]
+  #[arg(long, help = "Sets the change address to <ADDRESS>.")]
   pub(crate) change_address: Option<Address>,
 }
 
