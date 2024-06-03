@@ -151,9 +151,9 @@ impl TransactionBuilder {
       ));
     }
 
-    if self.change_addresses.contains(&self.recipient) {
+   /* if self.change_addresses.contains(&self.recipient) {
       return Err(Error::DuplicateAddress(self.recipient));
-    }
+    }*/
 
     match self.target {
       Target::Value(output_value) | Target::ExactPostage(output_value) => {
