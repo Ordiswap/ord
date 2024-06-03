@@ -15,7 +15,7 @@ pub struct Plan {
   pub(crate) reveal_fee_rate: FeeRate,
   pub(crate) reveal_satpoints: Vec<(SatPoint, TxOut)>,
   pub(crate) satpoint: Option<SatPoint>,
-  pub(crate) change_address: Vec<Address>,
+  pub(crate) change_address: Option<Address>,
 }
 
 impl Default for Plan {
@@ -35,11 +35,10 @@ impl Default for Plan {
       reveal_fee_rate: 1.0.try_into().unwrap(),
       reveal_satpoints: Vec::new(),
       satpoint: None,
-      change_address: Vec::new(),
+      change_address: None,
     }
   }
 }
-
 impl Plan {
   pub(crate) fn inscribe(
     &self,
@@ -61,8 +60,8 @@ impl Plan {
       locked_utxos.clone(),
       runic_utxos,
       utxos.clone(),
-      [self.change_address?, self.change_address?],
-      self.change_address?,
+      [self.change_address.clone().unwrap(), self.change_address.clone().unwrap()],
+      self.change_address.clone().unwrap(),
     )?;
 
     if self.dry_run {

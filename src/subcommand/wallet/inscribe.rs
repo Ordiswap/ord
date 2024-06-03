@@ -93,10 +93,10 @@ impl Inscribe {
       } else {
         self.satpoint
       },
-      change_address: vec![match self.change_address.clone() {
-        Some(destination) => destination.require_network(chain.network())?,
-        None => wallet.get_change_address()?,
-      }],
+      change_address: match self.change_address.clone() {
+        Some(destination) => Some(destination.require_network(chain.network())?),
+        None => Some(wallet.get_change_address()?),
+      },
     }
     .inscribe(
       &wallet.locked_utxos().clone().into_keys().collect(),

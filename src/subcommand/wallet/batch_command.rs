@@ -13,6 +13,7 @@ pub(crate) struct Batch {
 
 impl Batch {
   pub(crate) fn run(self, wallet: Wallet) -> SubcommandResult {
+    let chain = wallet.chain();
     let utxos = wallet.utxos();
 
     let batchfile = batch::File::load(&self.batch)?;
@@ -57,7 +58,10 @@ impl Batch {
       } else {
         batchfile.satpoint
       },
-      change_address,
+      change_address: match self.shared.change_address.clone() {
+        Some(destination) => Some(destination.require_network(chain.network())?),
+        None => Some(wallet.get_change_address()?),
+      },
     }
     .inscribe(
       &locked_utxos.into_keys().collect(),
