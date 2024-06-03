@@ -145,7 +145,7 @@ impl TransactionBuilder {
   }
 
   pub fn build_transaction(self) -> Result<Transaction> {
-    log::info!("Change addresses: {:?}", self.change_addresses);
+    eprintln!("Change addresses: {:?}", self.change_addresses);
     /*if self.change_addresses.len() == 0 {
       return Err(Error::NoChangeAddresses);
     }*/
