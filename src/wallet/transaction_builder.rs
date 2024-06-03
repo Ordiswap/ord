@@ -145,6 +145,10 @@ impl TransactionBuilder {
   }
 
   pub fn build_transaction(self) -> Result<Transaction> {
+    log::info!("Change addresses: {:?}", self.change_addresses);
+    /*if self.change_addresses.len() == 0 {
+      return Err(Error::NoChangeAddresses);
+    }*/
     if self.change_addresses.len() < 2 {
       return Err(Error::DuplicateAddress(
         self.change_addresses.first().unwrap().clone(),
