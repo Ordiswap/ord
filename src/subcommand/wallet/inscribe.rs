@@ -46,8 +46,8 @@ pub(crate) struct Inscribe {
   pub(crate) sat: Option<Sat>,
   #[arg(long, help = "Inscribe <SATPOINT>.", conflicts_with = "sat")]
   pub(crate) satpoint: Option<SatPoint>,
-  #[arg(long, help = "Sets the change address to <ADDRESS>.")]
-  pub(crate) change_address: Option<Address>,
+  #[arg(long, help = "Send change to <DESTINATION>.")]
+  pub(crate) change_address: Option<Address<NetworkUnchecked>>,
 }
 
 impl Inscribe {
@@ -93,14 +93,16 @@ impl Inscribe {
       } else {
         self.satpoint
       },
-      change_address: self.change_address,
+      change_address: vec![match self.change_address.clone() {
+        Some(destination) => destination.require_network(chain.network())?,
+        None => wallet.get_change_address()?,
+      }],
     }
     .inscribe(
       &wallet.locked_utxos().clone().into_keys().collect(),
       wallet.get_runic_outputs()?,
       wallet.utxos(),
       &wallet,
-      self.change_address.clone(),
     )
   }
 

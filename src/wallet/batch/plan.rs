@@ -15,7 +15,7 @@ pub struct Plan {
   pub(crate) reveal_fee_rate: FeeRate,
   pub(crate) reveal_satpoints: Vec<(SatPoint, TxOut)>,
   pub(crate) satpoint: Option<SatPoint>,
-  pub(crate) change_address: Option<Address>,
+  pub(crate) change_address: Vec<Address>,
 }
 
 impl Default for Plan {
@@ -35,7 +35,7 @@ impl Default for Plan {
       reveal_fee_rate: 1.0.try_into().unwrap(),
       reveal_satpoints: Vec::new(),
       satpoint: None,
-      change_address: None,
+      change_address: Vec::new(),
     }
   }
 }
@@ -47,7 +47,6 @@ impl Plan {
     runic_utxos: BTreeSet<OutPoint>,
     utxos: &BTreeMap<OutPoint, TxOut>,
     wallet: &Wallet,
-    change_address: Option<Address>,
   ) -> SubcommandResult {
     let Transactions {
       commit_tx,
@@ -62,8 +61,8 @@ impl Plan {
       locked_utxos.clone(),
       runic_utxos,
       utxos.clone(),
-      [change_address?, change_address?],
-      change_address?,
+      [self.change_address?, self.change_address?],
+      self.change_address?,
     )?;
 
     if self.dry_run {

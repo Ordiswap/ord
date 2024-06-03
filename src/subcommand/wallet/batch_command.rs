@@ -9,8 +9,6 @@ pub(crate) struct Batch {
     help = "Inscribe multiple inscriptions and rune defined in YAML <BATCH_FILE>."
   )]
   pub(crate) batch: PathBuf,
-  #[arg(long, help = "Change address to use for the batch")]
-  pub(crate) change_address: Option<Address>,
 }
 
 impl Batch {
@@ -59,14 +57,13 @@ impl Batch {
       } else {
         batchfile.satpoint
       },
-      change_address: self.change_address,
+      change_address,
     }
     .inscribe(
       &locked_utxos.into_keys().collect(),
       wallet.get_runic_outputs()?,
       utxos,
       &wallet,
-      self.change_address.clone(),
     )
   }
 
