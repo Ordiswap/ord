@@ -46,6 +46,8 @@ pub(crate) struct Inscribe {
   pub(crate) sat: Option<Sat>,
   #[arg(long, help = "Inscribe <SATPOINT>.", conflicts_with = "sat")]
   pub(crate) satpoint: Option<SatPoint>,
+  #[arg(long, help = "Inscribe <CHANGE>.", conflicts_with = "satpoint")]
+  pub(crate) change_address: Option<Address>,
 }
 
 impl Inscribe {
@@ -91,12 +93,14 @@ impl Inscribe {
       } else {
         self.satpoint
       },
+      change_address: self.change_address,
     }
     .inscribe(
       &wallet.locked_utxos().clone().into_keys().collect(),
       wallet.get_runic_outputs()?,
       wallet.utxos(),
       &wallet,
+      self.change_address.clone(),
     )
   }
 
